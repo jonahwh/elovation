@@ -1,5 +1,7 @@
 class SlackController < ApplicationController
   def player_ranking
-    @player = Player.where("name LIKE '%?%'", params[:text])
+    # Always pingpong, for now
+    @game = Game.find(1)
+    @player = Player.where('LOWER(name) LIKE ?', "%#{params[:text].downcase}%").first
   end
 end
