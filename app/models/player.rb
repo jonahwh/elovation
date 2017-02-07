@@ -28,6 +28,10 @@ class Player < ActiveRecord::Base
   validates :name, uniqueness: true, presence: true
   validates :email, allow_blank: true, format: /@/
 
+  def self.find_by_name(name)
+    where('LOWER(name) LIKE ?', "%#{name.downcase}%").first
+  end
+
   def as_json
     {
       name: name,
