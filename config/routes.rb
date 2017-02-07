@@ -12,6 +12,7 @@ Elovation::Application.routes.draw do
     collection do
       get :player_ranking
       get :record_result
+      get :leaderboard
     end
   end
 

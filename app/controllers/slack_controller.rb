@@ -24,6 +24,13 @@ class SlackController < ApplicationController
     ResultService.create(@game, result)
   end
 
+  def leaderboard
+    rows = @game.all_ratings.select(&:active?).map.with_index(1) do |rating, index|
+      [index, rating.player.name, rating.value, rating.player.total_wins(rating.game), rating.player.results.for_game(rating.game).losses.size]
+    end
+    @leaderboard = Terminal::Table.new :title => 'Leaderboard', :headings => %w(# Name Ranking W L), :rows => rows
+  end
+
   private
 
   def find_game

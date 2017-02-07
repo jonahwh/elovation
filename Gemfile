@@ -19,6 +19,7 @@ gem 'therubyracer', platforms: :ruby
 gem 'dynamic_form'
 gem 'elo'
 gem 'trueskill', github: 'saulabs/trueskill', require: 'saulabs/trueskill'
+gem 'terminal-table'
 
 group :production do
   gem 'rails_12factor'

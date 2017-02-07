@@ -165,6 +165,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    terminal-table (1.5.2)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
@@ -211,8 +212,15 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   spring
   spring-commands-rspec
+  terminal-table
   therubyracer
   timecop
   trueskill!
   uglifier
   unicorn
+
+RUBY VERSION
+   ruby 2.2.2p95
+
+BUNDLED WITH
+   1.12.5
