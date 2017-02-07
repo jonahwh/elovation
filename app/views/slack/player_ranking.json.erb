@@ -1,4 +1,8 @@
 {
   "response_type": "in_channel",
-  "text": "<%= @player.name %> has a ranking of <%= @player.ratings.find_by_game_id(@game).value %>"
+  <% if @ratings.present? %>
+    "text": "<%= @player.name %> has a ranking of <%= @ranking %>"
+  <% else %>
+    "text": "<%= @player.name %> is not yet ranked. Challenge them!"
+  <% end %>
 }

@@ -4,6 +4,7 @@ class SlackController < ApplicationController
 
   def player_ranking
     @player = Player.find_by_name params[:text]
+    @ratings = @player.ratings.find_by_game_id(@game)
   end
 
   def record_result
