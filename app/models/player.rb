@@ -29,7 +29,9 @@ class Player < ActiveRecord::Base
   validates :email, allow_blank: true, format: /@/
 
   def self.find_by_name(name)
-    where('LOWER(name) LIKE ?', "%#{name.downcase}%").first
+    player = where('LOWER(name) LIKE ?', "%#{name.downcase}%").first
+    raise PlayerNotFoundError.new(name) unless player.present?
+    player
   end
 
   def as_json
@@ -64,5 +66,10 @@ class Player < ActiveRecord::Base
     results.where(game_id: game, teams: {rank: Team::FIRST_PLACE_RANK}).against(opponent).to_a.count { |r| !r.tie? }
   end
 
-
+  class PlayerNotFoundError < StandardError
+    attr_reader :name
+    def initialize(name)
+      @name = name
+    end
+  end
 end

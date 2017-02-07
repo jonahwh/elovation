@@ -1,5 +1,6 @@
 class SlackController < ApplicationController
   before_action :find_game
+  rescue_from Player::PlayerNotFoundError, with: :player_not_found
 
   def player_ranking
     @player = Player.find_by_name params[:text]
@@ -27,5 +28,10 @@ class SlackController < ApplicationController
   def find_game
     # Always pingpong, for now
     @game = Game.find(1)
+  end
+
+  def player_not_found(error)
+    @name = error.name
+    render 'slack/player_not_found'
   end
 end
