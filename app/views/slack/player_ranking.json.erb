@@ -1,7 +1,7 @@
 {
   "response_type": "in_channel",
   <% if @ratings.present? %>
-    "text": "<%= @player.name %> has a ranking of <%= @ranking %>"
+    "text": "<%= @player.name %> has a ranking of <%= @ratings.value %>"
   <% else %>
     "text": "<%= @player.name %> is not yet ranked. Challenge them!"
   <% end %>
