@@ -10,9 +10,9 @@ Elovation::Application.routes.draw do
 
   resources :slack , only: [] do
     collection do
-      get :player_ranking
-      get :record_result
-      get :leaderboard
+      post :player_ranking
+      post :record_result
+      post :leaderboard
     end
   end
 
