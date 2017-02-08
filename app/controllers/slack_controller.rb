@@ -3,11 +3,13 @@ class SlackController < ApplicationController
   rescue_from Player::PlayerNotFoundError, with: :player_not_found
 
   def player_ranking
+    render json: {}, status: 401 unless params[:token] == ENV['RANKING_TOKEN']
     @player = Player.find_by_name params[:text]
     @ratings = @player.ratings.find_by_game_id(@game)
   end
 
   def record_result
+    render json: {}, status: 401 unless params[:token] == ENV['RESULT_TOKEN']
     first_player, _, second_player = params[:text].split(' ')
     @first_player = Player.find_by_name first_player
     @second_player = Player.find_by_name second_player
@@ -25,6 +27,7 @@ class SlackController < ApplicationController
   end
 
   def leaderboard
+    render json: {}, status: 401 unless params[:token] == ENV['LEADERBOARD_TOKEN']
     rows = @game.all_ratings.select(&:active?).map.with_index(1) do |rating, index|
       [index, rating.player.name, rating.value, rating.player.total_wins(rating.game), rating.player.results.for_game(rating.game).losses.size]
     end
