@@ -24,6 +24,9 @@ class SlackController < ApplicationController
       }
     }
     ResultService.create(@game, result)
+    ratings = @game.all_ratings.select(&:active?)
+    @first_player_rank = ratings.index { |rating| rating.player == @first_player } + 1
+    @second_player_rank = ratings.index { |rating| rating.player == @second_player } + 1
   end
 
   def leaderboard

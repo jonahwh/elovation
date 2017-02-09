@@ -1,4 +1,4 @@
 {
   "response_type": "in_channel",
-  "text": "<%= @first_player.name %> defeated <%= @second_player.name %>!\n<%= @first_player.name %> now has a ranking of <%= @first_player.ratings.find_by_game_id(@game).value %>\n<%= @second_player.name %> now has a ranking of <%= @second_player.ratings.find_by_game_id(@game).value %>"
+  "text": "<%= @first_player.name %> defeated <%= @second_player.name %>!\n<%= @first_player.name %> is now in <%= @first_player_rank.ordinalize %> place with a ranking of <%= @first_player.ratings.find_by_game_id(@game).value %>\n<%= @second_player.name %> is now in <%= @second_player_rank.ordinalize %> place with a ranking of <%= @second_player.ratings.find_by_game_id(@game).value %>"
 }
