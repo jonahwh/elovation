@@ -31,10 +31,14 @@ class SlackController < ApplicationController
 
   def leaderboard
     render json: {}, status: 401 unless params[:token] == ENV['LEADERBOARD_TOKEN']
-    rows = @game.all_ratings.select(&:active?).map.with_index(1) do |rating, index|
-      [index, rating.player.name, rating.value, rating.player.total_wins(rating.game), rating.player.results.for_game(rating.game).losses.size]
+    render json: { response_type: 'in_channel' }
+    Thread.new do
+      rows = @game.all_ratings.select(&:active?).map.with_index(1) do |rating, index|
+        [index, rating.player.name, rating.value, rating.player.total_wins(rating.game), rating.player.results.for_game(rating.game).losses.size]
+      end
+      leaderboard = Terminal::Table.new :title => 'Leaderboard', :headings => %w(# Name Ranking W L), :rows => rows
+      send_response("```#{leaderboard}``` See more details at #{ENV['PINGPONG_URL']}")
     end
-    @leaderboard = Terminal::Table.new :title => 'Leaderboard', :headings => %w(# Name Ranking W L), :rows => rows
   end
 
   private
@@ -47,5 +51,12 @@ class SlackController < ApplicationController
   def player_not_found(error)
     @name = error.name
     render 'slack/player_not_found'
+  end
+
+  def send_response(text)
+    request HTTPI::Request.new(params[:response_url])
+    request.headers['content-type'] = 'application/json'
+    request.body = { response_type: 'in_channel', text: text }.to_json
+    HTTPI.post(request)
   end
 end
