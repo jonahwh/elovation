@@ -58,5 +58,7 @@ class SlackController < ApplicationController
     request.headers['content-type'] = 'application/json'
     request.body = { response_type: 'in_channel', text: text }.to_json
     HTTPI.post(request)
+  rescue StandardError => e
+    puts "#{e.message}\n#{e.backtrace}"
   end
 end
