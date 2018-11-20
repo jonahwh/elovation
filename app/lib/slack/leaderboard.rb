@@ -14,9 +14,9 @@ module Slack
         average_ranking = rankings.reduce(:+).to_f / rankings.size
 
         percentiles = rankings_with_size.map { |r| r[:rank].to_f / r[:size] }
-        average_percentiles = percentiles.reduce(:+).to_f / rankings.size
+        average_percentile = 1 - (percentiles.reduce(:+).to_f / rankings.size)
 
-        [index, rating.player.name, rating.value, rating.player.total_wins(rating.game), rating.player.results.for_game(rating.game).losses.size, average_ranking.round(1), (average_percentiles * 100).round(0).ordinalize]
+        [index, rating.player.name, rating.value, rating.player.total_wins(rating.game), rating.player.results.for_game(rating.game).losses.size, average_ranking.round(1), (average_percentile * 100).round(0).ordinalize]
       end
       game_url = Rails.application.routes.url_helpers.game_url(game, host: ENV['HOST'])
       message = "```\n#{Terminal::Table.new :title => "#{game.name} Leaderboard", :headings => %w(# Name Ranking W L Average\ Ranking Average\ Percentile), :rows => rows}\n```\n<#{game_url}|More Details>"
