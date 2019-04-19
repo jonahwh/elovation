@@ -8,7 +8,7 @@ module Slack
       end
 
       def message
-        "<#{player_url}|#{@player.name}>: #{ordinalized_ranking(old_ranking)} #{ranking_emoji} *#{ordinalized_ranking(ranking)}* (#{old_rating} #{rating_emoji} *#{rating}*) #{rating_change} pts"
+        "<#{player_url}|#{@player.name}>: #{ranking_emoji} *#{ordinalized_ranking(ranking)}* (#{rating} pts) [#{rating_change} pts from #{ordinalized_ranking(old_ranking)} (#{old_rating} pts)]"
       end
 
       def player_url
@@ -32,7 +32,9 @@ module Slack
       end
 
       def rating_change
-        (rating - (Integer(old_rating) rescue 0))
+        change = (rating - (Integer(old_rating) rescue 0))
+        return "+#{change}" if change > 0
+        return change
       end
 
       def ranking_emoji
